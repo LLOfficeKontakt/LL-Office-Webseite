@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webseiten-Leitfaden – LL Office</title>
+    <meta
+      name="description"
+      content="Ein persönlicher Leitfaden, um Ihre Website strukturiert zu planen – Schritt für Schritt."
+    />
+    <meta name="theme-color" content="#05060d" />
+
+    <!-- Favicon / Tab-Logo -->
+    <link rel="icon" type="image/jpeg" sizes="32x32" href="Bilder/LLOfficeLogo.jpg" />
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="Bilder/LLOfficeLogo.jpg" />
+    <link rel="apple-touch-icon" href="Bilder/LLOfficeLogo.jpg" />
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles.css?v=20260204-2" />
+
+    <!-- Global JS (Accordion/ScrollTop etc.) -->
+    <script src="script.js?v=20260204-2" defer></script>
+
+    <!-- Page-specific (Desktop-first) styling -->
+    <style>
+      /* =========================================================
+         Leitfaden Desktop-Optimierung (ohne Layout-Brüche)
+         - nav/header matcht Home via .container
+         - accordion heights werden JS-seitig sauber gesetzt
+         ========================================================= */
+
+      /* Nutze exakt die globale Container-Breite der Homepage */
+      .guide-wrap {
+        max-width: var(--container);
+        margin: 0 auto;
+        padding: 0 var(--pad-x);
+      }
+
+      /* Desktop Layout: Inhalt links + Sidebar rechts */
+      .guide-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 1.4rem;
+        align-items: start;
+      }
+
+      /* Sticky Sidebar: bleibt sichtbar am PC */
+      .guide-sidebar {
+        position: sticky;
+        top: 108px; /* passt zu body padding-top (styles.css) */
+      }
+
+      /* Karten im Leitfaden */
+      .guide-card {
+        background: var(--panel);
+        border: 1px solid var(--stroke);
+        border-radius: 24px;
+        padding: clamp(18px, 2.5vw, 28px);
+        box-shadow: var(--shadow);
+      }
+
+      /* Kontakt-Card spacing */
+      .guide-meta {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1.4rem;
+      }
+
+      /* Scroll offset beim ScrollIntoView/Jumps (damit nichts unter Nav landet) */
+      .faq-item {
+        scroll-margin-top: 120px;
+      }
+
+      /* Kontakt / Form grid */
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .field {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      .field label {
+        font-weight: 800;
+        letter-spacing: 0.01em;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="url"],
+      input[type="date"],
+      textarea,
+      select {
+        width: 100%;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(11, 15, 31, 0.72);
+        color: var(--text);
+        padding: 0.9rem 1rem;
+        font: inherit;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      input:focus-visible,
+      textarea:focus-visible,
+      select:focus-visible {
+        outline: 2px solid rgba(249, 193, 91, 0.75);
+        outline-offset: 4px;
+      }
+
+      /* Chips */
+      .choice-grid {
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      .chip input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .chip span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+
+        padding: 0.55rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      }
+
+      .chip input:checked + span {
+        border-color: rgba(249, 193, 91, 0.55);
+        background: rgba(249, 193, 91, 0.18);
+      }
+
+      .chip span:hover {
+        transform: translateY(-1px);
+        border-color: rgba(249, 193, 91, 0.35);
+      }
+
+      /* Services */
+      .service-list {
+        display: grid;
+        gap: 0.8rem;
+        margin-top: 0.6rem;
+      }
+
+      .service-row {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr auto;
+        gap: 0.6rem;
+        align-items: center;
+      }
+
+      .service-row button {
+        padding: 0.85rem 1rem;
+        border-radius: 999px;
+      }
+
+      .service-actions {
+        display: flex;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+        margin-top: 0.9rem;
+      }
+
+      /* Progress */
+      .progress-wrap {
+        margin-top: 0.4rem;
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .progress-bar {
+        height: 10px;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        border-radius: 999px;
+        transition: width 0.25s ease;
+      }
+
+      .progress-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      /* Sidebar Tools */
+      .sidebar-title {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .sidebar-title h3 {
+        margin: 0;
+      }
+
+      .sidebar-actions {
+        display: grid;
+        gap: 0.6rem;
+        margin-top: 0.9rem;
+      }
+
+      .sidebar-actions .primary,
+      .sidebar-actions .ghost {
+        width: 100%;
+      }
+
+      .section-nav {
+        margin-top: 1rem;
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .section-nav a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 14px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+        font-size: 0.95rem;
+      }
+
+      .section-nav a:hover {
+        transform: translateY(-1px);
+        border-color: rgba(249, 193, 91, 0.35);
+        background: rgba(249, 193, 91, 0.08);
+      }
+
+      .section-nav a small {
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      /* visueller Fokus beim Jump */
+      .guide-focus {
+        outline: 2px solid rgba(249, 193, 91, 0.22);
+        outline-offset: 6px;
+        border-radius: 18px;
+      }
+
+      .status {
+        margin-top: 0.4rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      /* Mobile fallback */
+      @media (max-width: 1024px) {
+        .guide-layout {
+          grid-template-columns: 1fr;
+        }
+        .guide-sidebar {
+          position: static;
+          top: auto;
+        }
+      }
+
+      @media (max-width: 820px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        .service-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <!-- Scroll to top -->
+    <button class="scroll-top" aria-label="Nach oben scrollen" title="Nach oben" type="button">↑</button>
+
+    <!-- Hero -->
+    <header class="hero" id="top" style="min-height: auto; padding-bottom: 3rem">
+      <!-- NAV: Match mit Home -> container + gleiche Struktur -->
+      <nav class="nav container" aria-label="Hauptnavigation">
+        <div class="brand">
+          <img src="Bilder/LLOfficeLogo.jpg" alt="LL Office Logo" />
+          <span>LL Office</span>
+        </div>
+
+        <div class="nav-links">
+          <a href="index.html">Startseite</a>
+          <a href="#leitfaden">Leitfaden</a>
+          <a href="#abschluss">Abschluss</a>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </div>
+      </nav>
+
+      <!-- Hero Copy: auch container (Home-Spacing) -->
+      <div class="hero-copy container" style="margin-top: 2.4rem">
+        <p class="eyebrow">Ihr Weg zur perfekten Webseite</p>
+        <h1>Ein persönlicher Leitfaden – Schritt für Schritt</h1>
+        <p>
+          Dieser Leitfaden hilft uns, Ihre Website so zu gestalten, dass sie zu Ihnen, Ihrem Unternehmen und Ihren Kunden
+          passt. Bitte beantworten Sie die Fragen so, wie Sie es einem guten Berater erklären würden.
+        </p>
+
+        <!-- Kontakt-Card -->
+        <div class="guide-meta guide-card" id="leitfaden">
+          <h3>Kontakt für Rückfragen</h3>
+          <p class="hint">Damit wir schnell reagieren können (optional – aber empfohlen).</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="contact_name">Name</label>
+              <input id="contact_name" name="contact_name" type="text" placeholder="Vor- und Nachname" autocomplete="name" />
+            </div>
+
+            <div class="field">
+              <label for="contact_company">Unternehmen</label>
+              <input
+                id="contact_company"
+                name="contact_company"
+                type="text"
+                placeholder="Firmenname"
+                autocomplete="organization"
+              />
+            </div>
+
+            <div class="field">
+              <label for="contact_email">E-Mail</label>
+              <input id="contact_email" name="contact_email" type="email" placeholder="name@domain.de" autocomplete="email" />
+            </div>
+
+            <div class="field">
+              <label for="contact_phone">Telefon</label>
+              <input id="contact_phone" name="contact_phone" type="tel" placeholder="+49 …" autocomplete="tel" />
+            </div>
+          </div>
+
+          <!-- Fortschritt -->
+          <div class="progress-wrap" aria-label="Fortschritt">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="progress-meta">
+              <span id="progressText">0% ausgefüllt</span>
+              <span class="hint">Tipp: Sie können jederzeit speichern.</span>
+            </div>
+          </div>
+
+          <div class="service-actions">
+            <button class="ghost" type="button" id="btnSave">Zwischenspeichern</button>
+            <button class="ghost" type="button" id="btnClear">Alles zurücksetzen</button>
+          </div>
+
+          <p class="status" id="statusMsg" aria-live="polite"></p>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="guide-wrap">
+      <section style="padding-top: 3.2rem">
+        <div class="section-header">
+          <span class="tag">Leitfaden</span>
+          <h2>10 Abschnitte – sauber strukturiert</h2>
+          <p>Öffnen Sie einen Abschnitt, beantworten Sie die Fragen und gehen Sie weiter. Am Ende können Sie alles per E-Mail senden.</p>
+        </div>
+
+        <div class="guide-layout">
+          <!-- LEFT: Accordion -->
+          <div>
+            <div class="faq-list" data-faq id="guideAccordion">
+              <!-- Abschnitt 1 -->
+              <article class="faq-item" id="sec-1" data-section="1">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 1: Ihr Unternehmen verstehen</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label for="q11">1.1 Wie beschreiben Sie Ihr Unternehmen in 2–3 Sätzen?</label>
+                      <p class="hint">Stellen Sie sich vor, ein neuer Kunde fragt: „Was machen Sie genau?“</p>
+                      <textarea id="q11" name="q11" placeholder="Kurzbeschreibung …"></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label>1.2 Welche Leistungen oder Produkte sind für Sie am wichtigsten?</label>
+                      <p class="hint">Bitte priorisieren Sie (wichtig / sehr wichtig / optional). Nutzen Sie „Leistung hinzufügen“.</p>
+
+                      <div class="service-list" id="serviceList"></div>
+
+                      <div class="service-actions">
+                        <button class="ghost" type="button" id="addService">Leistung hinzufügen</button>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label>1.3 Was sollen Kunden sofort über Sie verstehen, wenn sie Ihre Webseite besuchen?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 1.3">
+                        <label class="chip"><input type="checkbox" name="q13" value="Kompetenz" /><span>Kompetenz</span></label>
+                        <label class="chip"><input type="checkbox" name="q13" value="Vertrauen" /><span>Vertrauen</span></label>
+                        <label class="chip"><input type="checkbox" name="q13" value="Schnelligkeit" /><span>Schnelligkeit</span></label>
+                        <label class="chip"><input type="checkbox" name="q13" value="Qualität" /><span>Qualität</span></label>
+                        <label class="chip"><input type="checkbox" name="q13" value="Innovation" /><span>Innovation</span></label>
+                        <label class="chip"><input type="checkbox" name="q13" value="Nähe & Persönlichkeit" /><span>Nähe & Persönlichkeit</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label for="q14">1.4 Was macht Ihr Angebot besonders oder anders als bei anderen Anbietern?</label>
+                      <p class="hint">z. B. Erfahrung, Preis, Service, Spezialisierung, Persönlichkeit</p>
+                      <textarea id="q14" name="q14" placeholder="Besonderheiten …"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 2 -->
+              <article class="faq-item" id="sec-2" data-section="2">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 2: Ihre Kunden im Fokus</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label for="q21">2.1 Wer ist Ihr typischer Wunschkunde?</label>
+                      <p class="hint">Alter, Beruf, Unternehmen, Situation</p>
+                      <textarea id="q21" name="q21" placeholder="Wunschkunde …"></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label for="q22">2.2 Mit welchen Problemen oder Fragen kommt dieser Kunde zu Ihnen?</label>
+                      <textarea id="q22" name="q22" placeholder="Probleme/Fragen …"></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label>2.3 Was wünscht sich dieser Kunde am meisten?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 2.3">
+                        <label class="chip"><input type="checkbox" name="q23" value="Sicherheit" /><span>Sicherheit</span></label>
+                        <label class="chip"><input type="checkbox" name="q23" value="Klarheit" /><span>Klarheit</span></label>
+                        <label class="chip"><input type="checkbox" name="q23" value="Schnelle Lösung" /><span>Schnelle Lösung</span></label>
+                        <label class="chip"><input type="checkbox" name="q23" value="Beratung" /><span>Beratung</span></label>
+                        <label class="chip"><input type="checkbox" name="q23" value="Preis-Leistung" /><span>Preis-Leistung</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label>2.4 Wie soll sich der Kunde fühlen, nachdem er Ihre Webseite besucht hat?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 2.4">
+                        <label class="chip"><input type="checkbox" name="q24" value="Verstanden" /><span>Verstanden</span></label>
+                        <label class="chip"><input type="checkbox" name="q24" value="Überzeugt" /><span>Überzeugt</span></label>
+                        <label class="chip"><input type="checkbox" name="q24" value="Gut beraten" /><span>Gut beraten</span></label>
+                        <label class="chip"><input type="checkbox" name="q24" value="Bereit zur Kontaktaufnahme" /><span>Bereit zur Kontaktaufnahme</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 3 -->
+              <article class="faq-item" id="sec-3" data-section="3">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 3: Ziel & Wirkung der Webseite</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label>3.1 Was ist das Hauptziel Ihrer Webseite?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 3.1">
+                        <label class="chip"><input type="radio" name="q31" value="Anfragen erhalten" /><span>Anfragen erhalten</span></label>
+                        <label class="chip"><input type="radio" name="q31" value="Termine vereinbaren" /><span>Termine vereinbaren</span></label>
+                        <label class="chip"><input type="radio" name="q31" value="Produkte verkaufen" /><span>Produkte verkaufen</span></label>
+                        <label class="chip"><input type="radio" name="q31" value="Informationen bereitstellen" /><span>Informationen bereitstellen</span></label>
+                        <label class="chip"><input type="radio" name="q31" value="Image & Vertrauen aufbauen" /><span>Image & Vertrauen aufbauen</span></label>
+                      </div>
+                      <p class="hint">Tipp: Wählen Sie das stärkste Ziel. Weitere Ziele können Sie bei 3.3 ergänzen.</p>
+                    </div>
+
+                    <div class="field">
+                      <label>3.2 Was soll ein Besucher als Nächstes tun?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 3.2">
+                        <label class="chip"><input type="radio" name="q32" value="Kontakt aufnehmen" /><span>Kontakt aufnehmen</span></label>
+                        <label class="chip"><input type="radio" name="q32" value="Anrufen" /><span>Anrufen</span></label>
+                        <label class="chip"><input type="radio" name="q32" value="Angebot anfragen" /><span>Angebot anfragen</span></label>
+                        <label class="chip"><input type="radio" name="q32" value="Kaufen" /><span>Kaufen</span></label>
+                        <label class="chip"><input type="radio" name="q32" value="Termin buchen" /><span>Termin buchen</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label for="q33">3.3 Gibt es mehrere Zielgruppen oder mehrere Ziele?</label>
+                      <p class="hint">Falls ja, bitte kurz beschreiben.</p>
+                      <textarea id="q33" name="q33" placeholder="Mehrere Zielgruppen/Ziele …"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 4 -->
+              <article class="faq-item" id="sec-4" data-section="4">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 4: Ton, Stil & Persönlichkeit</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label>4.1 Wie möchten Sie sprachlich wahrgenommen werden?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 4.1">
+                        <label class="chip"><input type="checkbox" name="q41" value="Locker & modern" /><span>Locker & modern</span></label>
+                        <label class="chip"><input type="checkbox" name="q41" value="Seriös & professionell" /><span>Seriös & professionell</span></label>
+                        <label class="chip"><input type="checkbox" name="q41" value="Persönlich & nahbar" /><span>Persönlich & nahbar</span></label>
+                        <label class="chip"><input type="checkbox" name="q41" value="Fachlich & präzise" /><span>Fachlich & präzise</span></label>
+                        <label class="chip"><input type="checkbox" name="q41" value="Emotional & inspirierend" /><span>Emotional & inspirierend</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label>4.2 Soll der Text eher…</label>
+                      <div class="chips" role="group" aria-label="Auswahl 4.2">
+                        <label class="chip"><input type="radio" name="q42" value="Kurz & klar" /><span>Kurz & klar</span></label>
+                        <label class="chip"><input type="radio" name="q42" value="Ausführlich & erklärend" /><span>Ausführlich & erklärend</span></label>
+                        <label class="chip"><input type="radio" name="q42" value="Verkaufsorientiert" /><span>Verkaufsorientiert</span></label>
+                        <label class="chip"><input type="radio" name="q42" value="Beratend" /><span>Beratend</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label>4.3 Möchten Sie Ihre Kunden mit „Du“ oder „Sie“ ansprechen?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 4.3">
+                        <label class="chip"><input type="radio" name="q43" value="Du" /><span>Du</span></label>
+                        <label class="chip"><input type="radio" name="q43" value="Sie" /><span>Sie</span></label>
+                        <label class="chip"><input type="radio" name="q43" value="Beides möglich" /><span>Beides möglich</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 5 -->
+              <article class="faq-item" id="sec-5" data-section="5">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 5: Inhalte & Seitenaufbau</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label>5.1 Welche Seiten sind für Sie wichtig?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 5.1">
+                        <label class="chip"><input type="checkbox" name="q51" value="Startseite" /><span>Startseite</span></label>
+                        <label class="chip"><input type="checkbox" name="q51" value="Leistungen / Produkte" /><span>Leistungen / Produkte</span></label>
+                        <label class="chip"><input type="checkbox" name="q51" value="Über uns" /><span>Über uns</span></label>
+                        <label class="chip"><input type="checkbox" name="q51" value="Referenzen" /><span>Referenzen</span></label>
+                        <label class="chip"><input type="checkbox" name="q51" value="Kontakt" /><span>Kontakt</span></label>
+                        <label class="chip"><input type="checkbox" name="q51" value="FAQ" /><span>FAQ</span></label>
+                        <label class="chip"><input type="checkbox" name="q51" value="Blog / Wissen" /><span>Blog / Wissen</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label for="q52">5.2 Gibt es Themen, die unbedingt erklärt werden sollen?</label>
+                      <textarea id="q52" name="q52" placeholder="Wichtige Themen …"></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label>5.3 Haben Sie bereits Inhalte?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 5.3">
+                        <label class="chip"><input type="checkbox" name="q53" value="Texte" /><span>Texte</span></label>
+                        <label class="chip"><input type="checkbox" name="q53" value="Bilder" /><span>Bilder</span></label>
+                        <label class="chip"><input type="checkbox" name="q53" value="Logo" /><span>Logo</span></label>
+                        <label class="chip"><input type="checkbox" name="q53" value="Videos" /><span>Videos</span></label>
+                        <label class="chip"><input type="checkbox" name="q53" value="Noch nichts vorhanden" /><span>Noch nichts vorhanden</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 6 -->
+              <article class="faq-item" id="sec-6" data-section="6">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 6: Design & Eindruck</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label>6.1 Wie soll Ihre Webseite wirken?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 6.1">
+                        <label class="chip"><input type="checkbox" name="q61" value="Modern" /><span>Modern</span></label>
+                        <label class="chip"><input type="checkbox" name="q61" value="Elegant" /><span>Elegant</span></label>
+                        <label class="chip"><input type="checkbox" name="q61" value="Minimalistisch" /><span>Minimalistisch</span></label>
+                        <label class="chip"><input type="checkbox" name="q61" value="Vertrauenswürdig" /><span>Vertrauenswürdig</span></label>
+                        <label class="chip"><input type="checkbox" name="q61" value="Kreativ" /><span>Kreativ</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label for="q62">6.2 Gibt es Farben oder einen bestehenden Markenstil?</label>
+                      <textarea id="q62" name="q62" placeholder="Farben / Stil …"></textarea>
+                    </div>
+
+                    <div class="field">
+                      <label for="q63">6.3 Kennen Sie Webseiten, die Ihnen gefallen?</label>
+                      <p class="hint">Bitte Link + kurze Erklärung.</p>
+                      <textarea id="q63" name="q63" placeholder="Link(s) + warum …"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 7 -->
+              <article class="faq-item" id="sec-7" data-section="7">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 7: Funktionen & Technik</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label>7.1 Benötigen Sie besondere Funktionen?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 7.1">
+                        <label class="chip"><input type="checkbox" name="q71" value="Kontaktformular" /><span>Kontaktformular</span></label>
+                        <label class="chip"><input type="checkbox" name="q71" value="Terminbuchung" /><span>Terminbuchung</span></label>
+                        <label class="chip"><input type="checkbox" name="q71" value="Online-Shop" /><span>Online-Shop</span></label>
+                        <label class="chip"><input type="checkbox" name="q71" value="Mehrsprachigkeit" /><span>Mehrsprachigkeit</span></label>
+                        <label class="chip"><input type="checkbox" name="q71" value="Newsletter" /><span>Newsletter</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label>7.2 Wie wichtig ist Ihnen mobile Nutzung?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 7.2">
+                        <label class="chip"><input type="radio" name="q72" value="Sehr wichtig" /><span>Sehr wichtig</span></label>
+                        <label class="chip"><input type="radio" name="q72" value="Standard" /><span>Standard</span></label>
+                        <label class="chip"><input type="radio" name="q72" value="Zweitrangig" /><span>Zweitrangig</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 8 -->
+              <article class="faq-item" id="sec-8" data-section="8">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 8: Pflege & Weiterentwicklung</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label>8.1 Möchten Sie Inhalte später selbst ändern können?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 8.1">
+                        <label class="chip"><input type="radio" name="q81" value="Ja" /><span>Ja</span></label>
+                        <label class="chip"><input type="radio" name="q81" value="Nein" /><span>Nein</span></label>
+                        <label class="chip"><input type="radio" name="q81" value="Mit kurzer Schulung" /><span>Mit kurzer Schulung</span></label>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <label>8.2 Ist langfristige Betreuung gewünscht?</label>
+                      <div class="chips" role="group" aria-label="Auswahl 8.2">
+                        <label class="chip"><input type="checkbox" name="q82" value="Wartung" /><span>Wartung</span></label>
+                        <label class="chip"><input type="checkbox" name="q82" value="Updates" /><span>Updates</span></label>
+                        <label class="chip"><input type="checkbox" name="q82" value="SEO" /><span>SEO</span></label>
+                        <label class="chip"><input type="checkbox" name="q82" value="Content-Erweiterung" /><span>Content-Erweiterung</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 9 -->
+              <article class="faq-item" id="sec-9" data-section="9">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 9: Rahmen & Erwartungen</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label for="q91">9.1 Gibt es einen gewünschten Fertigstellungstermin?</label>
+                      <input id="q91" name="q91" type="date" />
+                    </div>
+
+                    <div class="field">
+                      <label for="q92">9.2 Gibt es Budgetvorstellungen? (freiwillig)</label>
+                      <input id="q92" name="q92" type="text" placeholder="z. B. 800 € einmalig / 250 € pro Monat / offen" />
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Abschnitt 10 -->
+              <article class="faq-item" id="sec-10" data-section="10">
+                <button class="faq-question" type="button" aria-expanded="false">Abschnitt 10: Persönliche Wünsche</button>
+                <div class="faq-answer" role="region">
+                  <div class="choice-grid">
+                    <div class="field">
+                      <label for="q101">10.1 Gibt es etwas, das Ihnen besonders wichtig ist – auch wenn es bisher nicht gefragt wurde?</label>
+                      <textarea id="q101" name="q101" placeholder="Weitere Wünsche / Hinweise …"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- RIGHT: Sidebar -->
+          <aside class="guide-sidebar">
+            <div class="guide-card" aria-label="Leitfaden-Übersicht">
+              <div class="sidebar-title">
+                <h3 style="margin: 0">Übersicht</h3>
+                <span class="tag" style="margin: 0">PC</span>
+              </div>
+
+              <p class="hint" style="margin-top: 0.2rem">
+                Fortschritt bleibt sichtbar. Öffnen Sie gezielt Abschnitte – und senden Sie am Ende alles per E-Mail.
+              </p>
+
+              <div class="progress-wrap" aria-label="Fortschritt Sidebar">
+                <div class="progress-bar"><div class="progress-fill" id="progressFillSidebar"></div></div>
+                <div class="progress-meta">
+                  <span id="progressTextSidebar">0% ausgefüllt</span>
+                  <span class="hint">Autosave aktiv</span>
+                </div>
+              </div>
+
+              <div class="sidebar-actions">
+                <button class="ghost" type="button" id="btnSaveSide">Zwischenspeichern</button>
+                <button class="ghost" type="button" id="btnClearSide">Alles zurücksetzen</button>
+                <button class="primary" type="button" id="btnSendSide">Formular senden</button>
+              </div>
+
+              <div class="section-nav" aria-label="Abschnitt-Navigation">
+                <a href="#sec-1" data-jump="1">Abschnitt 1 <small>Unternehmen</small></a>
+                <a href="#sec-2" data-jump="2">Abschnitt 2 <small>Kunden</small></a>
+                <a href="#sec-3" data-jump="3">Abschnitt 3 <small>Ziel</small></a>
+                <a href="#sec-4" data-jump="4">Abschnitt 4 <small>Stil</small></a>
+                <a href="#sec-5" data-jump="5">Abschnitt 5 <small>Inhalte</small></a>
+                <a href="#sec-6" data-jump="6">Abschnitt 6 <small>Design</small></a>
+                <a href="#sec-7" data-jump="7">Abschnitt 7 <small>Technik</small></a>
+                <a href="#sec-8" data-jump="8">Abschnitt 8 <small>Pflege</small></a>
+                <a href="#sec-9" data-jump="9">Abschnitt 9 <small>Rahmen</small></a>
+                <a href="#sec-10" data-jump="10">Abschnitt 10 <small>Wünsche</small></a>
+              </div>
+
+              <p class="status" id="statusMsgSidebar" aria-live="polite"></p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <!-- Abschluss / Conversion Zone -->
+    <footer class="footer" id="abschluss">
+      <div class="footer-card conversion-contact guide-wrap">
+        <span class="tag">Abschluss</span>
+        <h2>Formular per E-Mail senden</h2>
+
+        <p class="lead">Ein Klick erstellt eine E-Mail mit allen Antworten. Sie müssen nur noch auf „Senden“ klicken.</p>
+
+        <div class="final-actions" style="display: flex; gap: 0.9rem; flex-wrap: wrap; justify-content: center">
+          <button class="primary" type="button" id="btnSend">Formular senden</button>
+          <a class="ghost" href="mailto:lloffice.kontakt@gmail.com?subject=Webseiten-Leitfaden">E-Mail manuell öffnen</a>
+        </div>
+
+        <p class="contact-hint">
+          Hinweis: Der Versand erfolgt über Ihr E-Mail-Programm. Falls sich nichts öffnet, prüfen Sie bitte die Standard-Mail-App/Browser-Einstellungen.
+        </p>
+
+        <div class="contact-info">
+          <div><span>✉️</span><a href="mailto:lloffice.kontakt@gmail.com">lloffice.kontakt@gmail.com</a></div>
+          <div><span>📞</span><a href="tel:+4915753222869">+49 1575 3222 869</a></div>
+        </div>
+
+        <p class="trust-note">Datensparsam · lokal im Browser speicherbar · Versand erst nach Ihrem Klick</p>
+      </div>
+
+      <p class="disclaimer guide-wrap">
+        © <span id="year"></span> LL Office – Leon Löcker. Alle Rechte vorbehalten. ·
+        <a href="index.html">Startseite</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+      </p>
+    </footer>
+
+    <!-- =========================================================
+         Leitfaden Script (Form/Progress/Save/Send)
+         + FIX: Accordion-Height dynamisch (kein Abschneiden)
+         ========================================================= -->
+    <script>
+      (function () {
+        const STORAGE_KEY = "lloffice_guide_v1";
+
+        const statusTop = document.getElementById("statusMsg");
+        const statusSide = document.getElementById("statusMsgSidebar");
+
+        const progressFillTop = document.getElementById("progressFill");
+        const progressTextTop = document.getElementById("progressText");
+
+        const progressFillSide = document.getElementById("progressFillSidebar");
+        const progressTextSide = document.getElementById("progressTextSidebar");
+
+        const byId = (id) => document.getElementById(id);
+        const qs = (sel, ctx = document) => ctx.querySelector(sel);
+        const qsa = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+        function setStatus(msg) {
+          if (statusTop) statusTop.textContent = msg || "";
+          if (statusSide) statusSide.textContent = msg || "";
+          if (msg) {
+            setTimeout(() => {
+              if (statusTop) statusTop.textContent = "";
+              if (statusSide) statusSide.textContent = "";
+            }, 3500);
+          }
+        }
+
+        function createServiceRow(value = "", prio = "wichtig") {
+          const wrap = document.createElement("div");
+          wrap.className = "service-row";
+
+          const name = document.createElement("input");
+          name.type = "text";
+          name.placeholder = "Leistung / Produkt";
+          name.value = value;
+          name.setAttribute("data-service", "name");
+
+          const sel = document.createElement("select");
+          sel.setAttribute("data-service", "prio");
+          ["sehr wichtig", "wichtig", "optional"].forEach((opt) => {
+            const o = document.createElement("option");
+            o.value = opt;
+            o.textContent = opt;
+            if (opt === prio) o.selected = true;
+            sel.appendChild(o);
+          });
+
+          const del = document.createElement("button");
+          del.type = "button";
+          del.className = "ghost";
+          del.textContent = "Entfernen";
+          del.addEventListener("click", () => {
+            wrap.remove();
+            updateProgress();
+            autosave();
+            refreshOpenHeights();
+          });
+
+          [name, sel].forEach((el) => {
+            el.addEventListener("input", () => {
+              updateProgress();
+              autosave();
+              refreshOpenHeights();
+            });
+            el.addEventListener("change", () => {
+              updateProgress();
+              autosave();
+              refreshOpenHeights();
+            });
+          });
+
+          wrap.appendChild(name);
+          wrap.appendChild(sel);
+          wrap.appendChild(del);
+          return wrap;
+        }
+
+        function getServices() {
+          const list = byId("serviceList");
+          if (!list) return [];
+          return qsa(".service-row", list)
+            .map((row) => {
+              const name = qs('[data-service="name"]', row)?.value?.trim() || "";
+              const prio = qs('[data-service="prio"]', row)?.value || "";
+              if (!name) return null;
+              return `${name} — ${prio}`;
+            })
+            .filter(Boolean);
+        }
+
+        function serialize() {
+          const data = {};
+          qsa("input, textarea, select").forEach((el) => {
+            const name = el.name || el.id;
+            if (!name) return;
+
+            if (el.type === "checkbox") {
+              if (!data[name]) data[name] = [];
+              if (el.checked) data[name].push(el.value);
+              return;
+            }
+
+            if (el.type === "radio") {
+              if (el.checked) data[name] = el.value;
+              return;
+            }
+
+            data[name] = el.value;
+          });
+
+          data.services = getServices();
+          return data;
+        }
+
+        function hydrate(saved) {
+          if (!saved) return;
+
+          qsa("input, textarea, select").forEach((el) => {
+            const key = el.name || el.id;
+            if (!key) return;
+
+            if (el.type === "checkbox") {
+              const arr = saved[key] || [];
+              el.checked = Array.isArray(arr) ? arr.includes(el.value) : false;
+              return;
+            }
+
+            if (el.type === "radio") {
+              el.checked = saved[key] === el.value;
+              return;
+            }
+
+            if (typeof saved[key] !== "undefined") el.value = saved[key];
+          });
+
+          const list = byId("serviceList");
+          if (list) {
+            list.innerHTML = "";
+            const services = Array.isArray(saved.services) ? saved.services : [];
+            if (services.length) {
+              services.forEach((line) => {
+                const parts = String(line).split("—").map((s) => s.trim());
+                const name = parts[0] || "";
+                const prio = (parts[1] || "wichtig").toLowerCase();
+                list.appendChild(createServiceRow(name, prio));
+              });
+            } else {
+              list.appendChild(createServiceRow("", "wichtig"));
+            }
+          }
+
+          updateProgress();
+          refreshOpenHeights();
+        }
+
+        function save() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(serialize()));
+            setStatus("Gespeichert.");
+          } catch (e) {
+            setStatus("Speichern nicht möglich (Browser-Einstellung).");
+          }
+        }
+
+        function autosave() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(serialize()));
+          } catch (_) {}
+        }
+
+        function load() {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return null;
+            return JSON.parse(raw);
+          } catch (_) {
+            return null;
+          }
+        }
+
+        function clearAll() {
+          if (!confirm("Alles zurücksetzen?")) return;
+          try {
+            localStorage.removeItem(STORAGE_KEY);
+          } catch (_) {}
+          window.location.reload();
+        }
+
+        function countCompletion(data) {
+          const total = 18;
+          let done = 0;
+
+          const hasText = (v) => String(v || "").trim().length > 0;
+
+          if (hasText(data.contact_name)) done++;
+          if (hasText(data.contact_company)) done++;
+          if (hasText(data.contact_email)) done++;
+          if (hasText(data.contact_phone)) done++;
+
+          if (hasText(data.q11)) done++;
+          if ((data.services || []).length > 0) done++;
+          if ((data.q13 || []).length > 0) done++;
+          if (hasText(data.q14)) done++;
+
+          if (hasText(data.q21)) done++;
+          if (hasText(data.q22)) done++;
+          if ((data.q23 || []).length > 0) done++;
+          if ((data.q24 || []).length > 0) done++;
+
+          if (hasText(data.q31)) done++;
+          if (hasText(data.q32)) done++;
+          if (hasText(data.q33)) done++;
+
+          if ((data.q41 || []).length > 0) done++;
+          if (hasText(data.q42)) done++;
+          if (hasText(data.q43)) done++;
+
+          const pct = Math.round((done / total) * 100);
+          return Math.max(0, Math.min(100, pct));
+        }
+
+        function updateProgress() {
+          const data = serialize();
+          const pct = countCompletion(data);
+
+          if (progressFillTop) progressFillTop.style.width = pct + "%";
+          if (progressTextTop) progressTextTop.textContent = pct + "% ausgefüllt";
+
+          if (progressFillSide) progressFillSide.style.width = pct + "%";
+          if (progressTextSide) progressTextSide.textContent = pct + "% ausgefüllt";
+        }
+
+        function buildEmailBody(data) {
+          const lines = [];
+          const push = (title, value) => {
+            if (value === null || typeof value === "undefined") return;
+            const v = Array.isArray(value) ? value.join(", ") : String(value).trim();
+            if (!v) return;
+            lines.push(title);
+            lines.push(v);
+            lines.push("");
+          };
+
+          lines.push("🧭 Webseiten-Leitfaden – Antworten");
+          lines.push("================================");
+          lines.push("");
+
+          push("Kontakt – Name:", data.contact_name);
+          push("Kontakt – Unternehmen:", data.contact_company);
+          push("Kontakt – E-Mail:", data.contact_email);
+          push("Kontakt – Telefon:", data.contact_phone);
+
+          lines.push("Abschnitt 1: Ihr Unternehmen verstehen");
+          lines.push("-------------------------------------");
+          push("1.1 Unternehmen in 2–3 Sätzen:", data.q11);
+          push("1.2 Wichtigste Leistungen/Produkte (Priorität):", data.services);
+          push("1.3 Sofort verstehen:", data.q13);
+          push("1.4 Besonderheiten:", data.q14);
+
+          lines.push("Abschnitt 2: Ihre Kunden im Fokus");
+          lines.push("--------------------------------");
+          push("2.1 Wunschkunde:", data.q21);
+          push("2.2 Probleme/Fragen:", data.q22);
+          push("2.3 Wünsche:", data.q23);
+          push("2.4 Gefühl nach Besuch:", data.q24);
+
+          lines.push("Abschnitt 3: Ziel & Wirkung");
+          lines.push("---------------------------");
+          push("3.1 Hauptziel:", data.q31);
+          push("3.2 Nächster Schritt:", data.q32);
+          push("3.3 Mehrere Ziele/Zielgruppen:", data.q33);
+
+          lines.push("Abschnitt 4: Ton, Stil & Persönlichkeit");
+          lines.push("--------------------------------------");
+          push("4.1 Wahrnehmung:", data.q41);
+          push("4.2 Text-Stil:", data.q42);
+          push("4.3 Ansprache:", data.q43);
+
+          lines.push("Abschnitt 5: Inhalte & Seitenaufbau");
+          lines.push("----------------------------------");
+          push("5.1 Wichtige Seiten:", data.q51);
+          push("5.2 Unbedingt erklären:", data.q52);
+          push("5.3 Vorhandene Inhalte:", data.q53);
+
+          lines.push("Abschnitt 6: Design & Eindruck");
+          lines.push("------------------------------");
+          push("6.1 Wirkung:", data.q61);
+          push("6.2 Farben/Markenstil:", data.q62);
+          push("6.3 Webseiten-Beispiele:", data.q63);
+
+          lines.push("Abschnitt 7: Funktionen & Technik");
+          lines.push("--------------------------------");
+          push("7.1 Funktionen:", data.q71);
+          push("7.2 Mobile Wichtigkeit:", data.q72);
+
+          lines.push("Abschnitt 8: Pflege & Weiterentwicklung");
+          lines.push("--------------------------------------");
+          push("8.1 Später selbst ändern:", data.q81);
+          push("8.2 Langfristige Betreuung:", data.q82);
+
+          lines.push("Abschnitt 9: Rahmen & Erwartungen");
+          lines.push("-------------------------------");
+          push("9.1 Wunschtermin:", data.q91);
+          push("9.2 Budget:", data.q92);
+
+          lines.push("Abschnitt 10: Persönliche Wünsche");
+          lines.push("-------------------------------");
+          push("10.1 Wichtiges zusätzlich:", data.q101);
+
+          return lines.join("\n");
+        }
+
+        function sendMail() {
+          const data = serialize();
+
+          const subjectParts = [];
+          if (data.contact_company) subjectParts.push(data.contact_company);
+          if (data.contact_name) subjectParts.push(data.contact_name);
+          const subject = "Webseiten-Leitfaden" + (subjectParts.length ? " – " + subjectParts.join(" / ") : "");
+
+          const body = buildEmailBody(data);
+
+          const to = "lloffice.kontakt@gmail.com";
+          const href =
+            "mailto:" +
+            encodeURIComponent(to) +
+            "?subject=" +
+            encodeURIComponent(subject) +
+            "&body=" +
+            encodeURIComponent(body);
+
+          window.location.href = href;
+        }
+
+        /* =========================================================
+           FIX: Accordion-Höhen sauber setzen (kein Abschneiden)
+           - setzt --faq-answer-height auf die echte scrollHeight
+           - bei open/resize/input nachziehen
+           ========================================================= */
+        function setItemHeight(item) {
+          const answer = qs(".faq-answer", item);
+          if (!answer) return;
+
+          // Nur setzen, wenn Item offen ist (sonst wäre scrollHeight 0/klein)
+          if (!item.classList.contains("is-open")) return;
+
+          // kurz auf auto messen: scrollHeight gibt reale Höhe des Inhalts
+          const h = answer.scrollHeight;
+          item.style.setProperty("--faq-answer-height", h + "px");
+        }
+
+        function refreshOpenHeights() {
+          requestAnimationFrame(() => {
+            qsa(".faq-item.is-open").forEach(setItemHeight);
+          });
+        }
+
+        // Öffnet Abschnitt, scrollt hin, und sorgt sofort für korrekte Höhe
+        function openSection(sectionNumber) {
+          const item = qs(`.faq-item[data-section="${sectionNumber}"]`);
+          if (!item) return;
+
+          const btn = qs(".faq-question", item);
+          if (!btn) return;
+
+          const expanded = btn.getAttribute("aria-expanded") === "true";
+          if (!expanded) btn.click();
+
+          item.classList.add("guide-focus");
+          setTimeout(() => item.classList.remove("guide-focus"), 1200);
+
+          // Height-Fix & Scroll
+          setTimeout(() => {
+            setItemHeight(item);
+            item.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 40);
+        }
+
+        // init services list
+        const list = byId("serviceList");
+        if (list) list.appendChild(createServiceRow("", "wichtig"));
+
+        // restore saved
+        const saved = load();
+        if (saved) hydrate(saved);
+        else {
+          updateProgress();
+          refreshOpenHeights();
+        }
+
+        // change listeners for autosave + progress + open heights
+        qsa("input, textarea, select").forEach((el) => {
+          const ev = el.type === "checkbox" || el.type === "radio" ? "change" : "input";
+          el.addEventListener(ev, () => {
+            updateProgress();
+            autosave();
+            refreshOpenHeights();
+          });
+        });
+
+        // Buttons (top)
+        byId("btnSave")?.addEventListener("click", save);
+        byId("btnClear")?.addEventListener("click", clearAll);
+        byId("btnSend")?.addEventListener("click", () => {
+          save();
+          sendMail();
+        });
+
+        // Buttons (sidebar)
+        byId("btnSaveSide")?.addEventListener("click", save);
+        byId("btnClearSide")?.addEventListener("click", clearAll);
+        byId("btnSendSide")?.addEventListener("click", () => {
+          save();
+          sendMail();
+        });
+
+        byId("addService")?.addEventListener("click", () => {
+          list.appendChild(createServiceRow("", "wichtig"));
+          updateProgress();
+          autosave();
+          refreshOpenHeights();
+        });
+
+        // Sidebar navigation
+        qsa(".section-nav a[data-jump]").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const num = Number(a.getAttribute("data-jump"));
+            if (!Number.isFinite(num)) return;
+            openSection(num);
+          });
+        });
+
+        // Wenn FAQ aufgeht/zugeht: Höhe neu messen
+        qsa(".faq-question").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Nach dem Accordion-Toggle kurz warten, dann messen
+            setTimeout(refreshOpenHeights, 60);
+          });
+        });
+
+        // Reflow bei Resize / Zoom
+        window.addEventListener("resize", () => refreshOpenHeights());
+
+        // Wenn Fonts nachladen, kann sich Höhe ändern
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => refreshOpenHeights());
+        }
+
+        // Footer year
+        const year = byId("year");
+        if (year) year.textContent = String(new Date().getFullYear());
+      })();
+    </script>
+  </body>
+</html>
